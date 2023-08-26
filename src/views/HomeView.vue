@@ -102,6 +102,7 @@ export default {
           },
         ],
       };
+
       //应用配置生成图表
       this.chart1.setOption(option1);
 

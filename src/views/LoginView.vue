@@ -19,7 +19,7 @@
   
 <script>
 import { formToJSON } from 'axios';
-
+import { doLogin } from "@/apis/user";
 export default {
   data() {
     return {
@@ -42,6 +42,7 @@ export default {
       }
     }
   },
+
   methods: {
     validatePass(rule, value, callback) {
       if (value === "") {
@@ -56,13 +57,25 @@ export default {
       // 验证规则
       this.$refs.ruleForm.validate((valid) => {
         if (valid) {
-          // 跳转到home页
-          return this.$router.replace("/home");
+          this.login(this.ruleForm);
         } else {
           return false;
         }
       });
-    }
+    },
+    async login(form) {
+      let res = await doLogin(form);
+      if (res.data.code === 20000) {
+        if (res?.data?.data?.token) {
+          localStorage.setItem("token", res.data?.data?.token);
+          this.$store.commit("NAMEUPDATE", this.ruleForm.username);
+          // 确保成功之后加载菜单内容
+          await this.$store.dispatch("getMenuList");
+        }
+        // 跳转到home页
+        this.$router.replace("/home");
+      }
+    },
   },
 }
 </script>

@@ -7,16 +7,28 @@
                     active-text-color="#ffd04b">
                     <!-- //没有二级导航的 -->
                     <el-menu-item index="1">
-                        <span slot="title"> 首页</span>
+                        <span slot="title">
+                            <router-link to="/home">首页</router-link>
+                        </span>
                     </el-menu-item>
 
-                    <!-- //有二级导航的 -->
+                    <!-- 贷款管理 -->
                     <el-submenu index="2">
                         <template slot="title">
                             <span>贷款管理</span>
                         </template>
                         <el-menu-item index="2-1">
-                            贷款申请
+                            <router-link to="/loan-input/index">贷款申请</router-link>
+                        </el-menu-item>
+                    </el-submenu>
+
+                    <!-- 申请管理 -->
+                    <el-submenu index="3">
+                        <template slot="title">
+                            <span>申请管理</span>
+                        </template>
+                        <el-menu-item index="3-1">
+                            <router-link to='/application-manager/index'>申请列表</router-link>
                         </el-menu-item>
                     </el-submenu>
 
@@ -26,15 +38,15 @@
                 <el-header>
                     <!--//左侧面包屑-->
                     <div class="left">
-                        首页
+                        <BreadCrumb />
                     </div>
                     <!--//右侧用户名-->
                     <div class="right">
-                        <!--// //下拉菜单-->
-                        <el-dropdown>
+                        <!--//下拉菜单-->
+                        <el-dropdown @command="logout">
                             <span class="el-dropdown-link"> admin </span>
                             <el-dropdown-menu slot="dropdown">
-                                <el-dropdown-item>退出登录</el-dropdown-item>
+                                <el-dropdown-item command="logout">退出登录</el-dropdown-item>
                             </el-dropdown-menu>
 
                         </el-dropdown>
@@ -53,9 +65,32 @@
 </template>
 
 <script>
+import BreadCrumb from "@/components/BreadCrumb.vue";
+import { logout } from "@/apis/user.js";
 export default {
-
-}
+    components: { BreadCrumb },
+    methods: {
+        async logout(commond) {
+            console.log(commond);
+            if (commond === "logout") {
+                // 退出登录业务逻辑
+                let res = await logout();
+                if (res.data.code === 603) {
+                    // localStorage.removeItem("token");
+                    localStorage.clear();//清除所有数据  包含token
+                }
+            }
+        },
+    },
+    computed: {
+        userName() {
+            return this.$store.state.userName;
+        },
+        menuList() {
+            return this.$store.state.menuList;
+        },
+    },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -115,5 +150,9 @@ a:active {
 
 .el-menu-vertical-demo {
     border: none;
+}
+
+.router-link-active {
+    color: rgb(255, 208, 75) !important;
 }
 </style>
