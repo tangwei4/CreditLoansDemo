@@ -32,6 +32,42 @@
                         </el-menu-item>
                     </el-submenu>
 
+                    <!-- 贷款审批 -->
+                    <el-submenu index="4">
+                        <template slot="title">
+                            <span>贷款审批</span>
+                        </template>
+                        <el-menu-item index="4-1">
+                            <router-link to='/loan-approve/first'>初审</router-link>
+                        </el-menu-item>
+                        <el-menu-item index="4-2">
+                            <router-link to='/loan-approve/end'>终审</router-link>
+                        </el-menu-item>
+                    </el-submenu>
+
+                    <!-- 合同管理 -->
+                    <el-submenu index="5">
+                        <template slot="title">
+                            <span>合同管理</span>
+                        </template>
+                        <el-menu-item index="5-1">
+                            <router-link to='/contract-manage/index'>合同列表</router-link>
+                        </el-menu-item>
+                    </el-submenu>
+
+                     <!-- 权限管理 -->
+                    <el-submenu index="6">
+                        <template slot="title">
+                            <span>权限管理</span>
+                        </template>
+                        <el-menu-item index="6-1">
+                            <router-link to='/permission/create'>创建管理员</router-link>
+                        </el-menu-item>
+                        <el-menu-item index="6-2">
+                            <router-link to='/permission/list'>列表展示</router-link>
+                        </el-menu-item>
+                    </el-submenu>
+
                 </el-menu>
             </el-aside>
             <el-container>
