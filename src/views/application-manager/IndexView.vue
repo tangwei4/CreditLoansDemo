@@ -82,7 +82,7 @@
 </template>
 
 <script>
-import { getLoanList, updateLoan, deleteLoan, submitApprove } from '@/apis/loan.js'
+import { getLoanList, updateLoan, deleteLoan, submitLoan } from '@/apis/loan.js'
 
 export default {
     data() {
@@ -129,7 +129,7 @@ export default {
             pageOptions: {
                 pageNo: 1,
                 pageSize: 10,
-                name:''
+                name: ''
             },
             rows: 0,
             // 编辑框 变量
@@ -181,13 +181,7 @@ export default {
                 "-" +
                 month +
                 "-" +
-                day +
-                " " +
-                hours +
-                ":" +
-                minutes +
-                ":" +
-                seconds;
+                day;
             return dateStr;
         },
         getSex(str) {
@@ -214,7 +208,7 @@ export default {
 
         //提交审核
         async submit(id) {
-            let res = await submitApprove(id)
+            let res = await submitLoan(id)
             //20000代表成功，成功后重新获取数据 
             if (res.data.code === 20000) {
                 this.getLoanList()

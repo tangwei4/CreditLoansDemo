@@ -64,16 +64,17 @@ export default {
       });
     },
     async login(form) {
-      let res = await doLogin(form);
+      const res = await doLogin(form)
       if (res.data.code === 20000) {
         if (res?.data?.data?.token) {
-          localStorage.setItem("token", res.data?.data?.token);
-          this.$store.commit("NAMEUPDATE", this.ruleForm.username);
-          // 确保成功之后加载菜单内容
-          await this.$store.dispatch("getMenuList");
+          localStorage.setItem('token', res?.data?.data?.token)
+          await this.$store.dispatch('getMenuList')
+          // 跳转到首页前把成功登录的用户名保存
+          this.$store.commit("NAMEUPDATE", this.ruleForm.username)
+          this.$router.push("/home");
         }
-        // 跳转到home页
-        this.$router.replace("/home");
+      } else {
+        this.$message.error('登录失败!!!');
       }
     },
   },

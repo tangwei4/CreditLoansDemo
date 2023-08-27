@@ -3,71 +3,11 @@
         <el-container>
             <!-- 侧边栏  -->
             <el-aside width="200px">
-                <el-menu class="el-menu-vertical-demo" background-color="#545c64" text-color="#fff"
+                <!-- 添加router，开启路由模式-->
+                <el-menu router class="el-menu-vertical-demo" background-color="#545c64" text-color="#fff"
                     active-text-color="#ffd04b">
-                    <!-- //没有二级导航的 -->
-                    <el-menu-item index="1">
-                        <span slot="title">
-                            <router-link to="/home">首页</router-link>
-                        </span>
-                    </el-menu-item>
-
-                    <!-- 贷款管理 -->
-                    <el-submenu index="2">
-                        <template slot="title">
-                            <span>贷款管理</span>
-                        </template>
-                        <el-menu-item index="2-1">
-                            <router-link to="/loan-input/index">贷款申请</router-link>
-                        </el-menu-item>
-                    </el-submenu>
-
-                    <!-- 申请管理 -->
-                    <el-submenu index="3">
-                        <template slot="title">
-                            <span>申请管理</span>
-                        </template>
-                        <el-menu-item index="3-1">
-                            <router-link to='/application-manager/index'>申请列表</router-link>
-                        </el-menu-item>
-                    </el-submenu>
-
-                    <!-- 贷款审批 -->
-                    <el-submenu index="4">
-                        <template slot="title">
-                            <span>贷款审批</span>
-                        </template>
-                        <el-menu-item index="4-1">
-                            <router-link to='/loan-approve/first'>初审</router-link>
-                        </el-menu-item>
-                        <el-menu-item index="4-2">
-                            <router-link to='/loan-approve/end'>终审</router-link>
-                        </el-menu-item>
-                    </el-submenu>
-
-                    <!-- 合同管理 -->
-                    <el-submenu index="5">
-                        <template slot="title">
-                            <span>合同管理</span>
-                        </template>
-                        <el-menu-item index="5-1">
-                            <router-link to='/contract-manage/index'>合同列表</router-link>
-                        </el-menu-item>
-                    </el-submenu>
-
-                     <!-- 权限管理 -->
-                    <el-submenu index="6">
-                        <template slot="title">
-                            <span>权限管理</span>
-                        </template>
-                        <el-menu-item index="6-1">
-                            <router-link to='/permission/create'>创建管理员</router-link>
-                        </el-menu-item>
-                        <el-menu-item index="6-2">
-                            <router-link to='/permission/list'>列表展示</router-link>
-                        </el-menu-item>
-                    </el-submenu>
-
+                    <!-- for循环菜单组件，传入每一个菜单项-->
+                    <asideMenu v-for="(menu, index) in menuList" :menu="menu" :key="index" />
                 </el-menu>
             </el-aside>
             <el-container>
@@ -79,12 +19,12 @@
                     <!--//右侧用户名-->
                     <div class="right">
                         <!--//下拉菜单-->
-                        <el-dropdown @command="logout">
-                            <span class="el-dropdown-link"> admin </span>
+                        <el-dropdown @command="doCommand">
+                            <!-- 把这里写死的admin改成{{userName}}-->
+                            <span class="el-dropdown-link">{{ userName }}</span>
                             <el-dropdown-menu slot="dropdown">
                                 <el-dropdown-item command="logout">退出登录</el-dropdown-item>
                             </el-dropdown-menu>
-
                         </el-dropdown>
                     </div>
                 </el-header>
@@ -103,8 +43,10 @@
 <script>
 import BreadCrumb from "@/components/BreadCrumb.vue";
 import { logout } from "@/apis/user.js";
+import asideMenu from "@/components/asideMenu.vue";
+
 export default {
-    components: { BreadCrumb },
+    components: { BreadCrumb, asideMenu },
     methods: {
         async logout(commond) {
             console.log(commond);
@@ -117,6 +59,21 @@ export default {
                 }
             }
         },
+        async doCommand(e) {
+            if (e === "logout") {
+                let res = await logout()
+                if (res.data.code === 20000) {
+                    //这里需要await阻塞一下，避免下面刷新先执行
+                    await this.$router.replace("/login")
+
+                    //退出成功时清掉所有的存储信息
+                    localStorage.clear()
+                    //跳转后刷新下页面，清除掉路由信息
+                    window.location.reload()
+                }
+
+            }
+        }
     },
     computed: {
         userName() {

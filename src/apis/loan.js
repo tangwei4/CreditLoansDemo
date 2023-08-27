@@ -91,6 +91,7 @@ export const approveEnd = (id, flag) => {
 
 // 合同管理-合同列表接口
 export const contractList = (params) => {
+    console.log("--"+JSON.stringify(params) );
     return requset({
         url: '/contract/list',
         method: 'get',

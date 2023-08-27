@@ -62,17 +62,17 @@ export default {
                 {
                     label: "姓名",
                     prop: "name",
-                    width: "80",
-                },
-                {
-                    label: "出生日期",
-                    prop: "birthday",
-                    width: "160",
+                    width: "100",
                 },
                 {
                     label: "身份证",
                     prop: "identity_card",
                     width: "260",
+                },
+                {
+                    label: "合同状态",
+                    prop: "status",
+                    width: "160",
                 },
                 {
                     label: "操作",
@@ -97,6 +97,7 @@ export default {
         async getContractList() {
             let res = await contractList(this.pageOptions);
             if (res.data.code === 20000) {
+                this.tableData = res.data.data.data.data;
                 this.rows = res.data.data.rows;
             }
         },
@@ -111,9 +112,9 @@ export default {
         },
 
         async createContract(id) {
-            let res = await genContractFile(id)
+            let res = await generateContract(id)
             if (res.data.code === 20000) {
-                this.getList()
+                this.getContractList()
             }
         },
         async downContract(id) {

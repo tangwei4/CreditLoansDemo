@@ -39,10 +39,10 @@
     },
     "children": [
       {
-        "path": "/application-manage/index",
-        "path1": "/application-manage/Index",
-        "component": "application-manage/index",
-        "name": "application-manage/Index",
+        "path": "/application-manager/index",
+        "path1": "/application-manager/Index",
+        "component": "application-manager/index",
+        "name": "application-manager/Index",
         "meta": {
           "title": "申请列表"
         }
@@ -100,27 +100,27 @@
     ]
   },
   {
-    "path": "/promission",
-    "redirect": "/promission/create",
+    "path": "/permission",
+    "redirect": "/permission/create",
     "component": "layout",
     "meta": {
       "title": "权限管理"
     },
     "children": [
       {
-        "path": "/promission/create",
-        "path1": "/promission/Create",
-        "name": "promission/create",
-        "component": "promission/Create",
+        "path": "/permission/create",
+        "path1": "/permission/Create",
+        "name": "permission/create",
+        "component": "permission/Create",
         "meta": {
           "title": "创建管理员"
         }
       },
       {
-        "path": "/promission/index",
-        "path1": "/promission/Index",
-        "name": "promission/Index",
-        "component": "promission/index",
+        "path": "/permission/list",
+        "path1": "/permission/List",
+        "name": "permission/List",
+        "component": "permission/list",
         "meta": {
           "title": "列表展示"
         }
